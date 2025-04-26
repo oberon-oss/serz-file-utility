@@ -4,7 +4,7 @@ import picocli.CommandLine;
 
 public class VersionProvider implements CommandLine.IVersionProvider {
     @Override
-    public String[] getVersion() throws Exception {
+    public String[] getVersion() {
         ApplicationPropertyProvider provider = ApplicationPropertyProvider.getInstance();
         return new String[]{
                 "Application : " + provider.getProperty("serz.utility.group.id") + " - " + provider.getProperty("serz.utility.artifact.id"),
