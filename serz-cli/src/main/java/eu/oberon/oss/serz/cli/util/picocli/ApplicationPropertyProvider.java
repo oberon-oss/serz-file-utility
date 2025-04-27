@@ -1,4 +1,4 @@
-package eu.oberon.oss.util.picocli;
+package eu.oberon.oss.serz.cli.util.picocli;
 
 import lombok.extern.log4j.Log4j2;
 

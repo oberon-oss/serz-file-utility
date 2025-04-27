@@ -1,4 +1,4 @@
-package eu.oberon.oss.util.picocli;
+package eu.oberon.oss.serz.cli.util.picocli;
 
 import picocli.CommandLine;
 
@@ -7,7 +7,7 @@ public class VersionProvider implements CommandLine.IVersionProvider {
     public String[] getVersion() {
         ApplicationPropertyProvider provider = ApplicationPropertyProvider.getInstance();
         return new String[]{
-                "Application : " + provider.getProperty("serz.utility.group.id") + " - " + provider.getProperty("serz.utility.artifact.id"),
+                "Application : " + provider.getProperty("serz.utility.artifact.id"),
                 "version     : " + provider.getProperty("serz.utility.version")
         };
     }
