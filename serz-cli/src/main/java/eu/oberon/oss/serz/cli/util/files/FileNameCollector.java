@@ -7,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -31,21 +30,18 @@ public class FileNameCollector {
         fileFilter = file -> file.getName().endsWith(conversionType.getExtension()) || file.isDirectory();
     }
 
-    /**
-     * @return
-     */
     public List<File> generateListOfFiles() {
         List<File> files = new ArrayList<>();
-        processEntry(directory, conversionType, filePattern, recursive, files);
+        processEntry(directory, recursive, files);
         return files;
     }
 
-    private void processEntry(File path, ConversionType type, Pattern filePattern, boolean recursive, List<File> files) {
+    private void processEntry(File path, boolean recursive, List<File> files) {
         for (File file : path.listFiles(fileFilter)) {
             if (file.isFile() && file.canRead()) {
                 files.add(file);
             } else if (recursive && file.isDirectory() && file.canRead()) {
-                processEntry(file, type, filePattern, recursive, files);
+                processEntry(file, recursive, files);
             }
         }
     }
