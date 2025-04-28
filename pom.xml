@@ -22,9 +22,10 @@
         <jetbrains.annotation.version>23.0.0</jetbrains.annotation.version>
         <lombok.version>1.18.36</lombok.version>
         <apache.log4j.version>2.23.1</apache.log4j.version>
-        <junit.jupiter.version>5.10.3</junit.jupiter.version>
-        <antlr4.version>4.13.2</antlr4.version>
+        <junit.jupiter.version>5.12.2</junit.jupiter.version>
 
+        <sonar.organization>oberon-oss-eu</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <build>
@@ -150,6 +151,22 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
