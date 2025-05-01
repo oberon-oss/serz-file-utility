@@ -63,7 +63,7 @@ public class FileNameCollector {
         List<File> files = new ArrayList<>();
 
         long timeStarted = System.currentTimeMillis();
-        processEntry(directory, recursive, files);
+        processEntry(directory, files);
 
         String elapsed = getElapsedTime(Duration.ofMillis(System.currentTimeMillis() - timeStarted));
 
@@ -81,14 +81,14 @@ public class FileNameCollector {
         );
     }
 
-    private void processEntry(File path, boolean recursive, List<File> files) {
+    private void processEntry(File path, List<File> files) {
         File[] collectedEntries = path.listFiles(fileFilter);
         if (collectedEntries != null) {
             for (File file : collectedEntries) {
                 if (file.isFile() && file.canRead()) {
                     files.add(file);
                 } else if (recursive && file.isDirectory() && file.canRead()) {
-                    processEntry(file, recursive, files);
+                    processEntry(file, files);
                 }
             }
         } else {
