@@ -5,8 +5,8 @@ import org.jetbrains.annotations.Nullable;
 
 @Getter
 public enum ConversionType {
-    XML_TO_BIN(".xml", "xml-to-bin"),
-    BIN_TO_XML(".bin", "bin-to-xml");
+    XML_TO_BIN("xml", "xml-to-bin"),
+    BIN_TO_XML("bin", "bin-to-xml");
 
 
     private final String extension;

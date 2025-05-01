@@ -3,6 +3,7 @@ package eu.oberon.oss.serz.cli;
 
 import eu.oberon.oss.serz.ConversionType;
 import eu.oberon.oss.serz.cli.util.files.FileNameCollector;
+import eu.oberon.oss.serz.cli.util.picocli.ResourceBundleProvider;
 import eu.oberon.oss.serz.cli.util.picocli.VersionProvider;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +12,6 @@ import picocli.CommandLine;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
@@ -62,7 +62,7 @@ public class SERZUtility implements Callable<Integer> {
         }
 
         if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(String.format(RESOURCE_BUNDLE.getString("serz.utility.cli.error.not.directory"), directory));
+            throw new IllegalArgumentException(String.format(ResourceBundleProvider.getEntry("serz.utility.cli.error.not.directory"), directory));
         }
 
         try {
@@ -71,21 +71,17 @@ public class SERZUtility implements Callable<Integer> {
             LOGGER.fatal("Error encountered {}, aborting request.", e.getMessage(), e);
         }
 
-        String string = RESOURCE_BUNDLE.getString("serz.utility.cli.processing.request.info");
-        LOGGER.info(string, conversionType.getParameterValue(), directory, filePattern, recursive);
-
-        List<File> files = new FileNameCollector(conversionType, directory, filePattern, recursive).generateListOfFiles();
-        LOGGER.info("Selected {} files for processing.",files.size());
+        List<File> files = FileNameCollector.collectFiles(conversionType, directory, filePattern, recursive);
+        LOGGER.info("Selected {} files for processing.", files.size());
         return 0;
     }
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("serz-resource-bundle");
 
     public static void main(String[] args) {
         System.getProperties().setProperty("picocli.usage.width", "AUTO");
 
         CommandLine commandLine = new CommandLine(new SERZUtility());
-        commandLine.setResourceBundle(RESOURCE_BUNDLE);
+        commandLine.setResourceBundle(ResourceBundleProvider.getResourceBundle());
         System.exit(commandLine.execute(args));
     }
 
