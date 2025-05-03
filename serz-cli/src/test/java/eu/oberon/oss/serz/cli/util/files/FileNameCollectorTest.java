@@ -14,13 +14,13 @@ class FileNameCollectorTest {
 
     public static Stream<Arguments> collectFiles() {
         return Stream.of(
-                Arguments.of(7, 11, 11, new File("src/test/resources"), ".*", true),
-                Arguments.of(7, 11, 4, new File("src/test/resources"), "f1.*", true),
-                Arguments.of(7, 11, 2, new File("src/test/resources"), "f1-b.*", true),
-                Arguments.of(7, 11, 1, new File("src/test/resources"), "f1-b.bin", true),
-                Arguments.of(7, 11, 1, new File("src/test/resources"), "f1-b.xml", true),
-                Arguments.of(7, 11, 5, new File("src/test/resources"), ".*bin", true),
-                Arguments.of(7, 11, 6, new File("src/test/resources"), ".*xml", true)
+                Arguments.of(7, 13, 13, new File("src/test/resources"), ".*", true),
+                Arguments.of(7, 13, 4, new File("src/test/resources"), "f1.*", true),
+                Arguments.of(7, 13, 2, new File("src/test/resources"), "f1-b.*", true),
+                Arguments.of(7, 13, 1, new File("src/test/resources"), "f1-b.bin", true),
+                Arguments.of(7, 13, 1, new File("src/test/resources"), "f1-b.xml", true),
+                Arguments.of(7, 13, 5, new File("src/test/resources"), ".*bin", true),
+                Arguments.of(7, 13, 6, new File("src/test/resources"), ".*xml", true)
         );
     }
 
