@@ -10,6 +10,6 @@ public class ResourceBundleProvider {
     }
 
     public static String getEntry(String key) {
-        return RESOURCE_BUNDLE.getString(key);
+        return getResourceBundle().getString(key);
     }
 }

@@ -1,54 +1,64 @@
 package eu.oberon.oss.serz.cli.util.files;
 
 
-import eu.oberon.oss.serz.ConversionType;
-import eu.oberon.oss.serz.cli.util.picocli.ResourceBundleProvider;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Collects file names for processing.
+ *
+ * @author fhdumay
+ * @since 1.0.0
+ */
 @Getter
 @Log4j2
 public class FileNameCollector {
 
-    private final ConversionType conversionType;
     private final File directory;
     private final Pattern filePattern;
     private final boolean recursive;
     private final FileFilter fileFilter;
 
-    public static List<File> collectFiles(ConversionType conversionType, File directory, Pattern filePattern, boolean recursive) {
-        return new FileNameCollector(conversionType, directory, filePattern, recursive).generateListOfFiles();
+    private final FileNameCollectorStatistics statistics = new FileNameCollectorStatistics();
+
+    /**
+     * Runs a file collection based on the provided parameters.
+     *
+     * @param directory   The directory to process.
+     * @param filePattern The file pattern to
+     * @param recursive   Specifies if subdirectories of the specified 'directory' should be processed recursively.
+     * @return A list containing 0 or more file entries that were found.
+     * @since 1.0.
+     */
+    public  static <T> FileNameCollectorResult collectFiles(File directory, Pattern filePattern, boolean recursive) {
+        FileNameCollector collector = new FileNameCollector(directory, filePattern, recursive);
+        List<File> files = collector.generateListOfFiles();
+        return new FileNameCollectorResult(files,collector.statistics);
     }
 
-    private int directoriesProcessed = 0;
-    private int filesProcessed = 0;
-    private int filesMatchingFilter = 0;
-
-    private FileNameCollector(ConversionType conversionType, File directory, Pattern filePattern, boolean recursive) {
-        this.conversionType = conversionType;
+    private FileNameCollector(File directory, Pattern filePattern, boolean recursive) {
         this.directory = directory;
         this.filePattern = filePattern;
         this.recursive = recursive;
 
         fileFilter = file -> {
             if (file.isDirectory()) {
-                directoriesProcessed++;
+                statistics.incrementDirectoriesProcessed();
                 return true;
             }
 
             if (file.isFile()) {
-                filesProcessed++;
+                statistics.incrementFilesProcessed();
             }
 
             if (filePattern.matcher(file.getName()).matches()) {
-                filesMatchingFilter++;
+                statistics.incrementFilesMatchingFilter();
                 return true;
             }
             return false;
@@ -56,29 +66,12 @@ public class FileNameCollector {
     }
 
     private List<File> generateListOfFiles() {
-        String formatString;
-        formatString = ResourceBundleProvider.getEntry("serz.utility.cli.processing.request.info");
-        LOGGER.info(formatString, conversionType.getParameterValue(), directory, filePattern, recursive);
-
         List<File> files = new ArrayList<>();
-
-        long timeStarted = System.currentTimeMillis();
+        statistics.start();
         processEntry(directory, files);
-
-        String elapsed = getElapsedTime(Duration.ofMillis(System.currentTimeMillis() - timeStarted));
-
-        formatString = ResourceBundleProvider.getEntry("serz.utility.cli.processing.response.info");
-        LOGGER.info(formatString, elapsed, directoriesProcessed, filesProcessed, filesMatchingFilter);
+        statistics.stop();
+        LOGGER.info(statistics.toString());
         return files;
-    }
-
-    private String getElapsedTime(Duration duration) {
-        return String.format("%02d:%02d:%02d.%03d",
-                duration.toHours(),
-                duration.toMinutes() - (duration.toHours() * 60),
-                duration.toSeconds() - (duration.toMinutes() * 60),
-                duration.toMillis() - (duration.toSeconds() * 60)
-        );
     }
 
     private void processEntry(File path, List<File> files) {

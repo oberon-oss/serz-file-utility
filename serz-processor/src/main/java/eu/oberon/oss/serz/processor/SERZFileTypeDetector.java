@@ -1,4 +1,4 @@
-package eu.oberon.oss.serz;
+package eu.oberon.oss.serz.processor;
 
 import lombok.extern.log4j.Log4j2;
 

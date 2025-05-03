@@ -1,4 +1,4 @@
-package eu.oberon.oss.serz;
+package eu.oberon.oss.serz.processor;
 
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
@@ -15,15 +15,6 @@ public enum ConversionType {
     ConversionType(String extension, String parameterValue) {
         this.extension = extension;
         this.parameterValue = parameterValue;
-    }
-
-    public static @Nullable ConversionType getByExtension(String extension) {
-        for (ConversionType conversionType : ConversionType.values()) {
-            if (conversionType.getExtension().equalsIgnoreCase(extension)) {
-                return conversionType;
-            }
-        }
-        return null;
     }
 
     public static @Nullable ConversionType getByParameterValue(String parameterValue) {

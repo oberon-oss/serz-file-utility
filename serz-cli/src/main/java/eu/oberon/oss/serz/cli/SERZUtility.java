@@ -1,19 +1,20 @@
 package eu.oberon.oss.serz.cli;
 
 
-import eu.oberon.oss.serz.ConversionType;
 import eu.oberon.oss.serz.cli.util.files.FileNameCollector;
+import eu.oberon.oss.serz.cli.util.files.FileNameCollectorResult;
 import eu.oberon.oss.serz.cli.util.picocli.ResourceBundleProvider;
 import eu.oberon.oss.serz.cli.util.picocli.VersionProvider;
+import eu.oberon.oss.serz.processor.ConversionType;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Nullable;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static eu.oberon.oss.serz.cli.SERZUtility.APPLICATION_NAME;
 
@@ -49,7 +50,7 @@ public class SERZUtility implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"-p", "--file-pattern"},
-            defaultValue = "'.*'", showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            defaultValue = ".*", showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
             descriptionKey = "serz.utility.cli.file.pattern"
     )
     private Pattern filePattern;
@@ -57,23 +58,39 @@ public class SERZUtility implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        if (filePattern.toString().startsWith("'") && filePattern.toString().endsWith("'")) {
-            filePattern = Pattern.compile(filePattern.toString().substring(1, filePattern.toString().length() - 1));
-        }
-
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(String.format(ResourceBundleProvider.getEntry("serz.utility.cli.error.not.directory"), directory));
-        }
 
         try {
+            // Stripping any user provided single quotes from the pattern to prevent incorrect
+            // pattern matching as a result.
+            if (filePattern.toString().startsWith("'") && filePattern.toString().endsWith("'")) {
+                filePattern = Pattern.compile(filePattern.toString().substring(1, filePattern.toString().length() - 1));
+            }
+
+            if (!directory.isDirectory()) {
+                throw new IllegalArgumentException(String.format(ResourceBundleProvider.getEntry("serz.utility.cli.error.not.directory"), directory));
+            }
+
             directory = directory.getCanonicalFile();
+            String formatString = ResourceBundleProvider.getEntry("serz.utility.cli.processing.request.info");
+            LOGGER.info(formatString, conversionType.getParameterValue(), directory, filePattern, recursive);
+
+            FileNameCollectorResult result = FileNameCollector.collectFiles(directory, filePattern, recursive);
+            LOGGER.info("Selected {} files for processing.", result.getFileNames().size());
+            return 0;
+
         } catch (IOException e) {
             LOGGER.fatal("Error encountered {}, aborting request.", e.getMessage(), e);
+            return 1;
+        } catch (PatternSyntaxException e) {
+            LOGGER.fatal("Failed to compile file pattern {}:{}", filePattern, e.getMessage(), e);
+            return 2;
+        } catch (IllegalArgumentException e) {
+            LOGGER.fatal("{}",e.getMessage(), e);
+            return 3;
+        } catch (Exception e) {
+            LOGGER.fatal("Processing error occurred: {}", e.getMessage(), e);
+            return 10;
         }
-
-        List<File> files = FileNameCollector.collectFiles(conversionType, directory, filePattern, recursive);
-        LOGGER.info("Selected {} files for processing.", files.size());
-        return 0;
     }
 
 
@@ -90,6 +107,5 @@ public class SERZUtility implements Callable<Integer> {
         public @Nullable ConversionType convert(String value) {
             return ConversionType.getByParameterValue(value);
         }
-
     }
 }
