@@ -36,7 +36,7 @@ public class FileNameCollector {
      * @return A list containing 0 or more file entries that were found.
      * @since 1.0.
      */
-    public  static <T> FileNameCollectorResult collectFiles(File directory, Pattern filePattern, boolean recursive) {
+    public  static FileNameCollectorResult collectFiles(File directory, Pattern filePattern, boolean recursive) {
         FileNameCollector collector = new FileNameCollector(directory, filePattern, recursive);
         List<File> files = collector.generateListOfFiles();
         return new FileNameCollectorResult(files,collector.statistics);
