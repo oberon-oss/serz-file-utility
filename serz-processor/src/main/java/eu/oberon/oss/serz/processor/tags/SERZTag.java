@@ -7,6 +7,8 @@ import java.nio.file.Path;
 public abstract class SERZTag {
     private final byte[] pattern;
     private final long offset;
+    
+    @SuppressWarnings("FieldCanBeLocal")
     private final ByteBuffer buffer;
 
     protected SERZTag(byte[] pattern, long offset, ByteBuffer buffer) {
