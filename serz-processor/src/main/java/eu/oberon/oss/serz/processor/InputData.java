@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+@SuppressWarnings("unused")
 public class InputData {
     @Getter
     private final Path source;
