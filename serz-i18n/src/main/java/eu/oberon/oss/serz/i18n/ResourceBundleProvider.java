@@ -1,4 +1,4 @@
-package eu.oberon.oss.serz.cli.util.picocli;
+package eu.oberon.oss.serz.i18n;
 
 import java.util.ResourceBundle;
 

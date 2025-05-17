@@ -18,6 +18,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.oberon.oss</groupId>
+            <artifactId>serz-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>

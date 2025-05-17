@@ -1,6 +1,6 @@
 package eu.oberon.oss.serz.cli.util.files;
 
-import eu.oberon.oss.serz.cli.util.picocli.ResourceBundleProvider;
+import eu.oberon.oss.serz.i18n.ResourceBundleProvider;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 

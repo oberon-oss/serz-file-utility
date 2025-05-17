@@ -13,6 +13,7 @@
         <module>serz-cli</module>
         <module>serz-processor</module>
         <module>coverage</module>
+        <module>serz-i18n</module>
     </modules>
 
 
@@ -30,6 +31,7 @@
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven.compiler.proc>full</maven.compiler.proc>
+        <maven-project-info-reports-plugin.verions>3.9.0</maven-project-info-reports-plugin.verions>
 
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
@@ -114,6 +116,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-project-info-reports-plugin.verions}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

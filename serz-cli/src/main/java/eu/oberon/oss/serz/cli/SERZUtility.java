@@ -3,8 +3,8 @@ package eu.oberon.oss.serz.cli;
 
 import eu.oberon.oss.serz.cli.util.files.FileNameCollector;
 import eu.oberon.oss.serz.cli.util.files.FileNameCollectorResult;
-import eu.oberon.oss.serz.cli.util.picocli.ResourceBundleProvider;
 import eu.oberon.oss.serz.cli.util.picocli.VersionProvider;
+import eu.oberon.oss.serz.i18n.ResourceBundleProvider;
 import eu.oberon.oss.serz.processor.ConversionType;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static eu.oberon.oss.serz.cli.SERZUtility.APPLICATION_NAME;
+import static eu.oberon.oss.serz.i18n.Messages.CLI_ERROR_NOT_A_DIR;
 
 @CommandLine.Command(
         versionProvider = VersionProvider.class,
@@ -36,7 +37,7 @@ public class SERZUtility implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"-c", "--conversion-type"}, required = true,
-            descriptionKey = "serz.utility.cli.conversion-type",
+            descriptionKey = "serz.utility.cli.conversion.type",
             converter = ConversionTypeConverter.class
     )
     private ConversionType conversionType;
@@ -67,7 +68,7 @@ public class SERZUtility implements Callable<Integer> {
             }
 
             if (!directory.isDirectory()) {
-                throw new IllegalArgumentException(String.format(ResourceBundleProvider.getEntry("serz.utility.cli.error.not.directory"), directory));
+                throw CLI_ERROR_NOT_A_DIR.createException(directory);
             }
 
             directory = directory.getCanonicalFile();
