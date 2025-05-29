@@ -22,6 +22,11 @@
             <artifactId>serz-cli</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>eu.oberon.oss</groupId>
+            <artifactId>serz-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
