@@ -40,11 +40,11 @@
                             <goal>report-aggregate</goal>
                         </goals>
                         <phase>verify</phase>
-                        <configuration>
-                            <formats>
-                                <format>XML</format>
-                            </formats>
-                        </configuration>
+<!--                        <configuration>-->
+<!--                            <formats>-->
+<!--                                <format>XML</format>-->
+<!--                            </formats>-->
+<!--                        </configuration>-->
                     </execution>
                 </executions>
             </plugin>
