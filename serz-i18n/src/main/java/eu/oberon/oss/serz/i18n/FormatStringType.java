@@ -34,13 +34,21 @@ public enum FormatStringType {
      * Represents a message format type where the string contains placeholders
      * compatible with the format used by logging frameworks, such as in Log4j.
      * <p>
-     * Parameter replacements are specified by '{}' or '{0...n}'.
+     * Parameter replacements are specified by '{}'.
      * This format is commonly used for structured log messages that support
      * parameterized values.
      *
      * @since 1.0.0
      */
-    LOG_FORMAT
+    LOG_FORMAT,
 
+    /**
+     * Defines the formatting handled by the {@link java.text.MessageFormat} formatter.
+     * This formatter uses replacement strings like {0...n}. This format is distinctkly different from the
+     * {@link #LOG_FORMAT}, that uses unnumbered replacement place holders.
+     *
+     * @since 1.0.0
+     */
+    TEXT_FORMAT
 
 }
